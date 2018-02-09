@@ -6,9 +6,10 @@
 
 ### GSY视频播放器
 
-### JiaoZi播放器（基于自带MediaPlayer播放器）
+### JiaoZi播放器（自由切换播放MediaPlayer、ijkPlayer引擎、默认ijk）
 
-> 实现倍速切换(Android 5.0以下不支持)、清晰度切换，下载功能
+> 倍速切换(ijk支持5.0以下)、清晰度切换，下载功能
+> 直播流rtmp(仅ijk支持)
 >
 > 1、需要重写[JZMediaInterface](https://github.com/wapchief/QiNiuPlayer/blob/master/app/src/main/java/com/wapchief/qiniuplayer/views/MyJZVideoPlayerStandard.java)，拿到MediaPlayer控件，设置倍速控制。
 >

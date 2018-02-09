@@ -8,4 +8,15 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/jiaozi_player"/>
+
+    <Button
+        android:id="@+id/jiaozi_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="切换到JiaoZi引擎"/>
+    <Button
+        android:id="@+id/ijk_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="切换到ijk引擎" />
 </LinearLayout>

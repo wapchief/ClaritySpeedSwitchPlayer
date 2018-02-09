@@ -9,6 +9,8 @@ import android.widget.Toast;
 import com.pili.pldroid.player.PLMediaPlayer;
 import com.pili.pldroid.player.widget.PLVideoView;
 
+import static com.wapchief.qiniuplayer.MediaUrl.URL_RTMP;
+
 /**
  * Created by wapchief on 2018/1/18.
  */
@@ -22,7 +24,6 @@ public class QiNiuPlayerActivity extends AppCompatActivity implements
         View.OnClickListener{
 
     private static final String TAG = "MainActivity";
-    private static final String DEFAULT_TEST_URL = "rtmp://live.hkstv.hk.lxdns.com/live/hks";
     //控件
     PLVideoView mPLVideoView;
     //控制器
@@ -46,7 +47,7 @@ public class QiNiuPlayerActivity extends AppCompatActivity implements
         mMediaController = new MediaController(this);
         //关联播放器
         mPLVideoView.setMediaController(mMediaController);
-        mPLVideoView.setVideoPath(DEFAULT_TEST_URL);
+        mPLVideoView.setVideoPath(URL_RTMP);
         //播放初始化
 //        mMediaPlayer = new PLMediaPlayer(this);
 //        mMediaPlayer.setOnPreparedListener(this);
