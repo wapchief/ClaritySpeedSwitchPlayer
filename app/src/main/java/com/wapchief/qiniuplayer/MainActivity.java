@@ -20,14 +20,15 @@ public class MainActivity extends ListActivity{
     private String[] mTitles = new String[]{
             "七牛云播放器",
             "GSYVideoPlayer",
-            "GSYVideoPlayer2"
+            "GSYVideoPlayer2",
+            "JiaoZiVideoPlayer"
     };
 
     private Class[] mActivities = new Class[]{
             QiNiuPlayerActivity.class,
             GSYVideoPlayerActivity.class,
-            DetailControlActivity.class
-
+            DetailControlActivity.class,
+            JiaoZiPlayerActivity.class
     };
 
     @Override

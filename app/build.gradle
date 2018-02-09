@@ -31,9 +31,14 @@ dependencies {
     implementation 'com.github.vondear:RxTools:v1.7.6.4'
     //GSY播放器
     implementation 'com.shuyu:GSYVideoPlayer:3.0.0'
-
-
+    //Glide
     implementation 'com.github.bumptech.glide:glide:4.0.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     implementation 'jp.wasabeef:glide-transformations:3.0.1'
+    //支持下载，解析
+    implementation 'com.jwkj:M3U8Manger:v2.1.9'
+    //JiaoZi播放器支持，清晰度切换，倍速播放
+    implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
 }

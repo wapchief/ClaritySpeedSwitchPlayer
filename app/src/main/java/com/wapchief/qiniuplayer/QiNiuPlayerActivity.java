@@ -59,6 +59,11 @@ public class QiNiuPlayerActivity extends AppCompatActivity implements
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         mPLVideoView.stopPlayback();
