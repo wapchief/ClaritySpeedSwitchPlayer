@@ -5,8 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hdl.m3u8.M3U8DownloadTask;
+import com.hdl.m3u8.bean.OnDownloadListener;
+import com.hdl.m3u8.utils.NetSpeedUtils;
 import com.wapchief.qiniuplayer.event.DownloadEvent;
 import com.wapchief.qiniuplayer.event.SpeedEvent;
 import com.wapchief.qiniuplayer.system.MyIJKMediaSystem;
@@ -22,8 +26,6 @@ import java.util.LinkedHashMap;
 
 import cn.jzvd.JZVideoPlayer;
 
-import static com.wapchief.qiniuplayer.MediaUrl.URL_RTMP;
-
 /**
  * @author wapchief
  * @data 2018/2/4
@@ -32,7 +34,8 @@ import static com.wapchief.qiniuplayer.MediaUrl.URL_RTMP;
 public class JiaoZiPlayerActivity extends AppCompatActivity{
 
     private MyJZVideoPlayerStandard mPlayerStandard;
-    private Button mButton1, mButton;
+    private Button mButton1, mButton,mButtonDownload;
+    private TextView mProgress;
     private String[] mediaName = {"普通","高清","原画"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         Object[] objects = new Object[3];
         LinkedHashMap map = new LinkedHashMap();
         for (int i = 0; i < 3; i++) {
-            map.put(mediaName[i], URL_RTMP);
+            map.put(mediaName[i], MediaUrl.URL_M3U8);
         }
         objects[0] = map;
         objects[1] = false;
@@ -63,7 +66,15 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     private void initView() {
         mPlayerStandard = findViewById(R.id.jiaozi_player);
         mButton = findViewById(R.id.jiaozi_bt);
+        mButtonDownload = findViewById(R.id.download_bt);
+        mButtonDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDownload(MediaUrl.URL_M3U8);
+            }
+        });
         mButton.setVisibility(View.GONE);
+        mProgress = findViewById(R.id.download_progress);
         //切换到默认JZ引擎
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,6 +162,74 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onMessageEventPostDetail(DownloadEvent event) {
         Toast.makeText(this, "下载", Toast.LENGTH_SHORT).show();
+//        startDownload(MediaUrl.URL_M3U8);
     }
 
+    /**
+     * 下载M3u8视频
+     * @param mediaUrls
+     */
+    M3U8DownloadTask downloadTask = new M3U8DownloadTask("1001");
+    long lastLength = 0L;
+    private void startDownload(final String mediaUrls) {
+        downloadTask.setSaveFilePath("/sdcard/ttxinli/video/" + System.currentTimeMillis() + ".ts");
+        downloadTask.download(mediaUrls, new OnDownloadListener() {
+            @Override
+            public void onDownloading(long itemFileSize, int totalTs, int curTs) {
+
+            }
+
+            //下载完成
+            @Override
+            public void onSuccess() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgress.setText("已下载");
+
+                    }
+                });
+            }
+
+            //下载进度回调
+            @Override
+            public void onProgress(final long curLength) {
+                if (curLength - lastLength > 0) {
+                    //下载速度
+                    final String speed = NetSpeedUtils.getInstance().displayFileSize(curLength - lastLength) + "/s";
+//                    LogUtils.e(downloadTask.getTaskId() + "speed = " + speed);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgress.setText("正在下载"+(curLength+"").substring(0,2)+"%");
+
+                        }
+                    });
+                    lastLength = curLength;
+
+                }
+            }
+
+            //开始下载
+            @Override
+            public void onStart() {
+                Toast.makeText(JiaoZiPlayerActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
+            }
+
+            //下载出错
+            @Override
+            public void onError(Throwable errorMsg) {
+                Toast.makeText(JiaoZiPlayerActivity.this, errorMsg.getMessage(), Toast.LENGTH_LONG).show();
+
+            }
+
+        });
+    }
+
+    /**
+     * 停止下载
+     */
+    private void stopDownload() {
+        downloadTask.stop();
+    }
 }

@@ -19,4 +19,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="切换到ijk引擎" />
+    <Button
+        android:id="@+id/download_bt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="下载M3U8视频" />
+    <TextView
+        android:id="@+id/download_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>
