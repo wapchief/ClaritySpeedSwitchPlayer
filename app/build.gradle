@@ -57,5 +57,7 @@ dependencies {
     implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
+    //PDF
+    implementation 'es.voghdev.pdfviewpager:library:1.0.3'
 
 }

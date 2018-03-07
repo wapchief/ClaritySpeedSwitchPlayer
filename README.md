@@ -1,4 +1,4 @@
-# QiNiuPalyer
+# ClaritySpeedSwitchPlayer
 
 集成了
 

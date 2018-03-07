@@ -21,14 +21,16 @@ public class MainActivity extends ListActivity{
             "七牛云播放器",
             "GSYVideoPlayer",
             "GSYVideoPlayer2",
-            "JiaoZiVideoPlayer"
+            "JiaoZiVideoPlayer",
+            "PDFPlayer"
     };
 
     private Class[] mActivities = new Class[]{
             QiNiuPlayerActivity.class,
             GSYVideoPlayerActivity.class,
             DetailControlActivity.class,
-            JiaoZiPlayerActivity.class
+            JiaoZiPlayerActivity.class,
+            PDFPlayerActivity.class
     };
 
     @Override

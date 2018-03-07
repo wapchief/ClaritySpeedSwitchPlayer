@@ -9,7 +9,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hdl.m3u8.M3U8DownloadTask;
+import com.hdl.m3u8.M3U8InfoManger;
+import com.hdl.m3u8.bean.M3U8;
 import com.hdl.m3u8.bean.OnDownloadListener;
+import com.hdl.m3u8.bean.OnM3U8InfoListener;
 import com.hdl.m3u8.utils.NetSpeedUtils;
 import com.wapchief.qiniuplayer.event.DownloadEvent;
 import com.wapchief.qiniuplayer.event.SpeedEvent;
@@ -166,13 +169,37 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     }
 
     /**
+     * 获取m3u8信息
+     * @param mediaUrls
+     */
+    public void getm3u8Info(String mediaUrls) {
+        M3U8InfoManger.getInstance().getM3U8Info(mediaUrls, new OnM3U8InfoListener() {
+            @Override
+            public void onSuccess(M3U8 m3U8) {
+//                R.e("info:"+m3U8);
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onError(Throwable errorMsg) {
+//                LogUtils.e("info:"+errorMsg.toString());
+            }
+        });
+    }
+
+
+    /**
      * 下载M3u8视频
      * @param mediaUrls
      */
     M3U8DownloadTask downloadTask = new M3U8DownloadTask("1001");
     long lastLength = 0L;
     private void startDownload(final String mediaUrls) {
-        downloadTask.setSaveFilePath("/sdcard/ttxinli/video/" + System.currentTimeMillis() + ".ts");
+        downloadTask.setSaveFilePath("/sdcard/download_m3u8/video/" + System.currentTimeMillis() + ".ts");
         downloadTask.download(mediaUrls, new OnDownloadListener() {
             @Override
             public void onDownloading(long itemFileSize, int totalTs, int curTs) {

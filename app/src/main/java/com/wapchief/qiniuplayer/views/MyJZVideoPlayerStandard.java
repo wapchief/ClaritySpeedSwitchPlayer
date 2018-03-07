@@ -138,7 +138,6 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
             batteryTimeLayout.setVisibility(VISIBLE);
             videoCurrentTime.setVisibility(VISIBLE);
             batteryLevel.setVisibility(VISIBLE);
-            video_download.setVisibility(VISIBLE);
 
         } else if (currentScreen == SCREEN_WINDOW_NORMAL) {
             video_speed.setVisibility(GONE);
