@@ -2,6 +2,7 @@ package com.wapchief.qiniuplayer;
 
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -24,6 +25,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
@@ -37,7 +39,7 @@ import cn.jzvd.JZVideoPlayer;
 public class JiaoZiPlayerActivity extends AppCompatActivity{
 
     private MyJZVideoPlayerStandard mPlayerStandard;
-    private Button mButton1, mButton,mButtonDownload;
+    private Button mButton1, mButton,mButtonDownload,mButtonPlayer;
     private TextView mProgress;
     private String[] mediaName = {"普通","高清","原画"};
     @Override
@@ -45,7 +47,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jiaozi);
         initView();
-        initPlayerUrl();
+        initPlayerUrl(MediaUrl.URL_M3U8_PW);
         mJZMediaSystem = new MyJZMediaSystem();
         mIJKMediaSystem = new MyIJKMediaSystem();
     }
@@ -53,11 +55,11 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     /**
      * 初始化播放地址
      */
-    private void initPlayerUrl() {
+    private void initPlayerUrl(String url) {
         Object[] objects = new Object[3];
         LinkedHashMap map = new LinkedHashMap();
         for (int i = 0; i < 3; i++) {
-            map.put(mediaName[i], MediaUrl.URL_M3U8);
+            map.put(mediaName[i], url);
         }
         objects[0] = map;
         objects[1] = false;
@@ -70,10 +72,11 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         mPlayerStandard = findViewById(R.id.jiaozi_player);
         mButton = findViewById(R.id.jiaozi_bt);
         mButtonDownload = findViewById(R.id.download_bt);
+        mButtonPlayer = findViewById(R.id.download_player);
         mButtonDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(MediaUrl.URL_M3U8);
+                startDownload(MediaUrl.URL_M3U8_PW);
             }
         });
         mButton.setVisibility(View.GONE);
@@ -94,7 +97,17 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
                 JZVideoPlayer.setMediaInterface(mIJKMediaSystem);
             }
         });
+
+        /**本地播放*/
+        mButtonPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPlayerStandard.setUp(path+"2",JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN,"");
+            }
+        });
     }
+
+
 
     /**
      * 设置屏幕方向
@@ -196,10 +209,11 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
      * 下载M3u8视频
      * @param mediaUrls
      */
+    String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "/m3u8/download/video/";
     M3U8DownloadTask downloadTask = new M3U8DownloadTask("1001");
     long lastLength = 0L;
     private void startDownload(final String mediaUrls) {
-        downloadTask.setSaveFilePath("/sdcard/download_m3u8/video/" + System.currentTimeMillis() + ".ts");
+        downloadTask.setSaveFilePath(path + "2");
         downloadTask.download(mediaUrls, new OnDownloadListener() {
             @Override
             public void onDownloading(long itemFileSize, int totalTs, int curTs) {

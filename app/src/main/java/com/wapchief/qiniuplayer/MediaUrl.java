@@ -14,4 +14,6 @@ public class MediaUrl {
     /**普通视频*/
     public final static String URL_M3U8 = "http://res.pmit.cn/F3Video/hls/a5814959235386e4e7126573030c4d79/list.m3u8";
 
+    public final static String URL_M3U8_PW = "http://www.mypsy365.com/hls/173/stream/sd/ppJAPJiHwlvSnaljof9n7gICTPnYshyI.m3u8?1521447157";
+
 }

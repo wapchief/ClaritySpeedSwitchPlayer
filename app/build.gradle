@@ -49,12 +49,9 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     implementation 'jp.wasabeef:glide-transformations:3.0.1'
     //支持下载，解析
-    implementation 'com.jwkj:M3U8Manger:v2.1.9'
+    implementation 'com.jwkj:M3U8Manger:v2.3.0'
     //JiaoZi播放器支持，清晰度切换，倍速播放
     implementation 'cn.jzvd:jiaozivideoplayer:6.2.7'
-    //ijk播放器
-    implementation 'tv.danmaku.ijk.media:ijkplayer-java:0.8.4'
-    implementation 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.4'
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
     //PDF

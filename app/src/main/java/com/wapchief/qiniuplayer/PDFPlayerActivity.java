@@ -22,7 +22,7 @@ public class PDFPlayerActivity extends AppCompatActivity implements DownloadFile
     private String TAG = "PDFPlayerActivity";
     private RemotePDFViewPager mWebView;
     private PDFPagerAdapter adapter;
-    private String mUrl = "http://www.cals.uidaho.edu/edComm/curricula/CustRel_curriculum/content/sample.pdf";
+    private String mUrl = "http://ese1a1b2c8d5xn.pri.qiqiuyun.net/course-activity-413/20180307101410-h48w9qtklog0goc4/1d02580e4e1f4435_pdf?e=1521015992&token=ExRD5wolmUnwwITVeSEXDQXizfxTRp7vnaMKJbO-:U5RQhZwEyHoxfz0V-euxcLFfHiI=";
     private RelativeLayout pdf_root;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
