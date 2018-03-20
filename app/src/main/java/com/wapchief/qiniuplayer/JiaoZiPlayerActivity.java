@@ -47,7 +47,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jiaozi);
         initView();
-        initPlayerUrl(MediaUrl.URL_M3U8_PW);
+        initPlayerUrl(MediaUrl.URL_M3U8);
         mJZMediaSystem = new MyJZMediaSystem();
         mIJKMediaSystem = new MyIJKMediaSystem();
     }
@@ -76,7 +76,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         mButtonDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startDownload(MediaUrl.URL_M3U8_PW);
+                startDownload(MediaUrl.URL_M3U8);
             }
         });
         mButton.setVisibility(View.GONE);
