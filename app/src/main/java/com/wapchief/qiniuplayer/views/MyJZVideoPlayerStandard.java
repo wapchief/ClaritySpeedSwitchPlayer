@@ -7,18 +7,25 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wapchief.qiniuplayer.R;
 import com.wapchief.qiniuplayer.event.DownloadEvent;
 import com.wapchief.qiniuplayer.event.SpeedEvent;
+import com.wapchief.qiniuplayer.system.MyDanmaKuController;
 
 import org.greenrobot.eventbus.EventBus;
 
 import cn.jzvd.JZVideoPlayerStandard;
+import master.flame.danmaku.controller.IDanmakuView;
+import master.flame.danmaku.danmaku.model.IDanmakus;
+import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**
  * Created by wapchief on 2018/1/20.
@@ -31,6 +38,10 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
     TextView video_download;
     //音频
     TextView audio;
+    //弹幕开关
+    Switch mSwitch;
+    //弹幕
+    DanmakuView mDanmakuView;
     //    MediaController mMediaController;
     //倍速
     float mFloat = 1;
@@ -90,8 +101,58 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
         bottomProgressBar.setVisibility(View.GONE);
 //        retryRoot = (LinearLayout) findViewById(cn.jzvd.R.id.retry_layout);
 //        retryRoot.setVisibility(INVISIBLE);
+        mDanmakuView = findViewById(R.id.danmaku);
+        MyDanmaKuController mDanmaKuController = new MyDanmaKuController(getContext(), mDanmakuView);
+        mDanmaKuController.initDanmaKu();
+        mDanmaKuController.onHide();
+        mSwitch = findViewById(R.id.switch_danmaku);
+        mSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                                       @Override
+                                                       public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                                           if (isChecked) {
+                                                                mDanmakuView.show();
+                                                           }else {
+                                                               mDanmakuView.hide();
+                                                           }
+                                                       }
+                                                   });
+        mDanmakuView.setOnDanmakuClickListener(new IDanmakuView.OnDanmakuClickListener() {
+            @Override
+            public boolean onDanmakuClick(IDanmakus danmakus) {
+                Toast.makeText(getContext(), "onDanmakuClick", Toast.LENGTH_SHORT).show();
+                return false;
+            }
 
+            @Override
+            public boolean onDanmakuLongClick(IDanmakus danmakus) {
+                Toast.makeText(getContext(), "onDanmakuLongClick", Toast.LENGTH_SHORT).show();
+                return false;
+            }
 
+            @Override
+            public boolean onViewClick(IDanmakuView view) {
+                Toast.makeText(getContext(), "onViewClick", Toast.LENGTH_SHORT).show();
+//                if (dataSourceObjects == null || JZUtils.getCurrentFromDataSource(dataSourceObjects, currentUrlMapIndex) == null) {
+//                    Toast.makeText(getContext(), getResources().getString(R.string.no_url), Toast.LENGTH_SHORT).show();
+//
+//                }else
+//                if (currentState == CURRENT_STATE_NORMAL) {
+//                    if (!JZUtils.getCurrentFromDataSource(dataSourceObjects, currentUrlMapIndex).toString().startsWith("file") &&
+//                            !JZUtils.getCurrentFromDataSource(dataSourceObjects, currentUrlMapIndex).toString().startsWith("/") &&
+//                            !JZUtils.isWifiConnected(getContext()) && !WIFI_TIP_DIALOG_SHOWED) {
+//                        showWifiDialog();
+//
+//                    }else {
+//                        onEvent(JZUserActionStandard.ON_CLICK_START_THUMB);
+//                        startVideo();
+//                    }
+//                } else if (currentState == CURRENT_STATE_AUTO_COMPLETE) {
+                    onClickUiToggle();
+//                }
+                startDismissControlViewTimer();
+                return false;
+            }
+        });
     }
 
 
@@ -118,7 +179,6 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
     @Override
     public void startVideo() {
         super.startVideo();
-
     }
 
     @Override
@@ -138,6 +198,8 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
             batteryTimeLayout.setVisibility(VISIBLE);
             videoCurrentTime.setVisibility(VISIBLE);
             batteryLevel.setVisibility(VISIBLE);
+//            mDanmakuView.setVisibility(GONE);
+            mSwitch.setVisibility(VISIBLE);
 
         } else if (currentScreen == SCREEN_WINDOW_NORMAL) {
             video_speed.setVisibility(GONE);
@@ -145,6 +207,7 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
             videoCurrentTime.setVisibility(GONE);
             batteryLevel.setVisibility(GONE);
             video_download.setVisibility(GONE);
+            mSwitch.setVisibility(VISIBLE);
 
         } else if (currentScreen == SCREEN_WINDOW_TINY) {
             video_speed.setVisibility(GONE);
@@ -152,6 +215,7 @@ public class MyJZVideoPlayerStandard extends JZVideoPlayerStandard {
             videoCurrentTime.setVisibility(GONE);
             batteryLevel.setVisibility(GONE);
             video_download.setVisibility(GONE);
+            mSwitch.setVisibility(VISIBLE);
         }
 
     }

@@ -59,5 +59,7 @@ dependencies {
     implementation 'org.greenrobot:eventbus:3.1.1'
     //PDF
     implementation 'es.voghdev.pdfviewpager:library:1.0.3'
-
+    //bilibili弹幕
+    implementation 'com.github.ctiao:DanmakuFlameMaster:0.9.25'
+    implementation 'com.github.ctiao:ndkbitmap-armv7a:0.9.21'
 }

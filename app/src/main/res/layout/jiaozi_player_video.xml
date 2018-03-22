@@ -5,6 +5,7 @@
     android:background="@android:color/black"
     android:descendantFocusability="blocksDescendants">
 
+
     <FrameLayout
         android:id="@+id/surface_container"
         android:layout_width="match_parent"
@@ -21,7 +22,11 @@
         android:layout_alignParentStart="true"
         android:background="#000000"
         android:scaleType="fitCenter" />
-
+    <master.flame.danmaku.ui.widget.DanmakuView
+        android:id="@+id/danmaku"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="visible"/>
     <TextView
         android:id="@+id/audio"
         android:layout_width="wrap_content"
@@ -150,6 +155,13 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent"/>
+            <Switch
+                android:id="@+id/switch_danmaku"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="弹幕开"
+                android:textOff="弹幕关"/>
+
             <TextView
                 android:id="@+id/video_download"
                 android:layout_width="wrap_content"
@@ -157,7 +169,7 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/white"
                 android:text="下载"
-                android:visibility="invisible"
+                android:visibility="gone"
                 android:padding="10dp"
                 android:textSize="14sp"/>
             <TextView
@@ -284,4 +296,6 @@
             android:textColor="@android:color/white"
             android:textSize="14sp" />
     </LinearLayout>
+
+
 </RelativeLayout>

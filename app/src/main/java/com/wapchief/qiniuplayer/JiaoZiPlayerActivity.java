@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,8 +17,10 @@ import com.hdl.m3u8.bean.M3U8;
 import com.hdl.m3u8.bean.OnDownloadListener;
 import com.hdl.m3u8.bean.OnM3U8InfoListener;
 import com.hdl.m3u8.utils.NetSpeedUtils;
+import com.wapchief.qiniuplayer.event.DanmaKuEvent;
 import com.wapchief.qiniuplayer.event.DownloadEvent;
 import com.wapchief.qiniuplayer.event.SpeedEvent;
+import com.wapchief.qiniuplayer.system.MyDanmaKuController;
 import com.wapchief.qiniuplayer.system.MyIJKMediaSystem;
 import com.wapchief.qiniuplayer.system.MyJZMediaSystem;
 import com.wapchief.qiniuplayer.views.MyJZVideoPlayerStandard;
@@ -29,7 +33,9 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 
+import cn.jzvd.JZUtils;
 import cn.jzvd.JZVideoPlayer;
+import master.flame.danmaku.ui.widget.DanmakuView;
 
 /**
  * @author wapchief
@@ -42,12 +48,14 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     private Button mButton1, mButton,mButtonDownload,mButtonPlayer;
     private TextView mProgress;
     private String[] mediaName = {"普通","高清","原画"};
+    private DanmakuView mDanmakuView;
+    private MyDanmaKuController mDanmaKuController;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_jiaozi);
         initView();
-        initPlayerUrl(MediaUrl.URL_M3U8);
+        initPlayerUrl(MediaUrl.URL_RTMP);
         mJZMediaSystem = new MyJZMediaSystem();
         mIJKMediaSystem = new MyIJKMediaSystem();
     }
@@ -69,6 +77,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     }
 
     private void initView() {
+//        mDanmakuView = findViewById(R.id.danmaku_view);
         mPlayerStandard = findViewById(R.id.jiaozi_player);
         mButton = findViewById(R.id.jiaozi_bt);
         mButtonDownload = findViewById(R.id.download_bt);
@@ -105,6 +114,22 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
                 mPlayerStandard.setUp(path+"2",JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN,"");
             }
         });
+        /**弹幕*/
+
+    }
+
+    private void initDanmaKu() {
+        ViewGroup vp = (ViewGroup) (JZUtils.scanForActivity(mPlayerStandard.getContext()))//.getWindow().getDecorView();
+                .findViewById(Window.ID_ANDROID_CONTENT);
+
+        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+//        lp.setMargins(0, sp2px(48), 0, sp2px(48));
+        mDanmakuView = new DanmakuView(this);
+        vp.addView(mDanmakuView, lp);
+        mDanmaKuController = new MyDanmaKuController(this, mDanmakuView);
+        mDanmaKuController.initDanmaKu();
+        mDanmaKuController.onHide();
     }
 
 
@@ -123,7 +148,11 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
             return;
         }
         super.onBackPressed();
-
+        if (mDanmakuView != null) {
+            // dont forget release!
+            mDanmakuView.release();
+            mDanmakuView = null;
+        }
     }
 
     //系统播放器引擎
@@ -137,6 +166,9 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         //Change these two variables back
         JZVideoPlayer.FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         JZVideoPlayer.NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+        if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+            mDanmakuView.pause();
+        }
     }
 
     @Override
@@ -144,6 +176,9 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         super.onResume();
         JZVideoPlayer.setMediaInterface(mIJKMediaSystem);
         initPlayer();
+        if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
+            mDanmakuView.resume();
+        }
     }
 
     @Override
@@ -151,7 +186,6 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         super.onStart();
         //注册消息总线
         EventBus.getDefault().register(this);
-
     }
 
     @Override
@@ -161,9 +195,15 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
 
     }
 
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mDanmakuView != null) {
+            // dont forget release!
+            mDanmakuView.release();
+            mDanmakuView = null;
+        }
     }
 
     /**倍速切换*/
@@ -179,6 +219,16 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     public void onMessageEventPostDetail(DownloadEvent event) {
         Toast.makeText(this, "下载", Toast.LENGTH_SHORT).show();
 //        startDownload(MediaUrl.URL_M3U8);
+    }
+
+    /**弹幕开关*/
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onMessageEventPostDetail(DanmaKuEvent event) {
+        if (event.isSwitch()) {
+            mDanmakuView.show();
+        }else {
+            mDanmakuView.hide();
+        }
     }
 
     /**

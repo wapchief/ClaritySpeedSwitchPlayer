@@ -4,11 +4,15 @@
     android:layout_height="match_parent">
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <com.wapchief.qiniuplayer.views.MyJZVideoPlayerStandard
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/jiaozi_player"/>
 
+    </RelativeLayout>
     <Button
         android:id="@+id/jiaozi_bt"
         android:layout_width="wrap_content"
