@@ -4,7 +4,6 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
@@ -22,8 +21,7 @@ import com.wapchief.qiniuplayer.event.DownloadEvent;
 import com.wapchief.qiniuplayer.event.SpeedEvent;
 import com.wapchief.qiniuplayer.system.MyDanmaKuController;
 import com.wapchief.qiniuplayer.system.MyIJKMediaSystem;
-import com.wapchief.qiniuplayer.system.MyJZMediaSystem;
-import com.wapchief.qiniuplayer.views.MyJZVideoPlayerStandard;
+import com.wapchief.qiniuplayer.views.MyJZVideoPlayerRtmpStandard;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -42,9 +40,9 @@ import master.flame.danmaku.ui.widget.DanmakuView;
  * @data 2018/2/4
  */
 
-public class JiaoZiPlayerActivity extends AppCompatActivity{
+public class JiaoZiRtmpPlayerActivity extends AppCompatActivity{
 
-    private MyJZVideoPlayerStandard mPlayerStandard;
+    private MyJZVideoPlayerRtmpStandard mPlayerStandard;
     private Button mButton1, mButton,mButtonDownload,mButtonPlayer;
     private TextView mProgress;
     private String[] mediaName = {"普通","高清","原画"};
@@ -53,10 +51,9 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_jiaozi);
+        setContentView(R.layout.activity_jiaozi_rtmp);
         initView();
-        initPlayerUrl(MediaUrl.URL_M3U8);
-        mJZMediaSystem = new MyJZMediaSystem();
+        initPlayerUrl(MediaUrl.URL_RTMP);
         mIJKMediaSystem = new MyIJKMediaSystem();
     }
 
@@ -79,42 +76,6 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     private void initView() {
 //        mDanmakuView = findViewById(R.id.danmaku_view);
         mPlayerStandard = findViewById(R.id.jiaozi_player);
-        mButton = findViewById(R.id.jiaozi_bt);
-        mButtonDownload = findViewById(R.id.download_bt);
-        mButtonPlayer = findViewById(R.id.download_player);
-        mButtonDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startDownload(MediaUrl.URL_M3U8);
-            }
-        });
-        mButton.setVisibility(View.GONE);
-        mProgress = findViewById(R.id.download_progress);
-        //切换到默认JZ引擎
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JZVideoPlayer.setMediaInterface(mJZMediaSystem);
-            }
-        });
-        mButton1 = findViewById(R.id.ijk_bt);
-        mButton1.setVisibility(View.GONE);
-        //切换到Ijk引擎
-        mButton1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JZVideoPlayer.setMediaInterface(mIJKMediaSystem);
-            }
-        });
-
-        /**本地播放*/
-        mButtonPlayer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPlayerStandard.setUp(path+"2",JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN,"");
-            }
-        });
-        /**弹幕*/
 
     }
 
@@ -155,8 +116,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         }
     }
 
-    //系统播放器引擎
-    MyJZMediaSystem mJZMediaSystem;
+    //IJK播放器引擎
     MyIJKMediaSystem mIJKMediaSystem;
     @Override
     protected void onPause() {
@@ -209,7 +169,6 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     /**倍速切换*/
     @Subscribe(threadMode = ThreadMode.POSTING)
     public void onMessageEventPostSpeed(SpeedEvent event) {
-        mJZMediaSystem.setSpeeding(event.getSpeed());
         mIJKMediaSystem.setSpeeding(event.getSpeed());
         Toast.makeText(this, "正在切换倍速:"+event.getSpeed(), Toast.LENGTH_LONG).show();
     }
@@ -304,13 +263,13 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
             //开始下载
             @Override
             public void onStart() {
-                Toast.makeText(JiaoZiPlayerActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JiaoZiRtmpPlayerActivity.this, "开始下载", Toast.LENGTH_SHORT).show();
             }
 
             //下载出错
             @Override
             public void onError(Throwable errorMsg) {
-                Toast.makeText(JiaoZiPlayerActivity.this, errorMsg.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(JiaoZiRtmpPlayerActivity.this, errorMsg.getMessage(), Toast.LENGTH_LONG).show();
 
             }
 

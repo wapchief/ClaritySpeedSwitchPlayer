@@ -27,6 +27,9 @@
         <activity android:name=".JiaoZiPlayerActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:screenOrientation="portrait"/>
+        <activity android:name=".JiaoZiRtmpPlayerActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:screenOrientation="portrait"/>
         <activity android:name=".PDFPlayerActivity"/>
     </application>
 
