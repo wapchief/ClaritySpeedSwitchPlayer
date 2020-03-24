@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <com.wapchief.qiniuplayer.views.MyJZVideoPlayerStandard
+    <com.wapchief.qiniuplayer.views.MyJZVideoPlayerStandard2
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/jiaozi_player"/>
@@ -37,4 +37,10 @@
         android:id="@+id/download_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/dialog_bt"
+        android:text="弹窗测试"/>
 </LinearLayout>

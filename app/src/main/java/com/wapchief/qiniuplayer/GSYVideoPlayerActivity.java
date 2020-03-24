@@ -45,7 +45,7 @@ public class GSYVideoPlayerActivity extends GSYBaseActivityDetail{
         mVideo = findViewById(R.id.detail_player);
         changeSpeed = findViewById(R.id.change_speed);
 
-        String source1 = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
+        String source1 = MediaUrl.URL_M3U8;
         VideoModel model = new VideoModel(source1, "普通");
         VideoModel mode2 = new VideoModel(source1, "标清");
         VideoModel mode3 = new VideoModel(source1, "高清");
@@ -88,7 +88,7 @@ public class GSYVideoPlayerActivity extends GSYBaseActivityDetail{
     public GSYVideoOptionBuilder getGSYVideoOptionBuilder() {
         ImageView imageView = new ImageView(this);
 
-        return new GSYVideoOptionBuilder().setUrl(url)
+        return new GSYVideoOptionBuilder().setUrl(MediaUrl.URL_M3U8)
                 .setCacheWithPlay(true)
                 .setVideoTitle("1")
                 .setIsTouchWiget(true)

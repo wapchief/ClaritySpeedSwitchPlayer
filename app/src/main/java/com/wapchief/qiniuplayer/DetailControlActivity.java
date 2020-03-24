@@ -59,7 +59,7 @@ public class DetailControlActivity extends GSYVideoPlayerActivity {
 
     View loadingView;
 
-    private String url = "https://res.exexm.com/cw_145225549855002";
+    private String url = MediaUrl.URL_M3U8;
 
     private GifCreateHelper mGifCreateHelper;
 
@@ -145,7 +145,8 @@ public class DetailControlActivity extends GSYVideoPlayerActivity {
         stopGif = findViewById(R.id.stop_gif);
         loadingView = findViewById(R.id.loadingView);
 
-        String source1 = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
+//        String source1 = "http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4";
+        String source1=url;
         VideoModel model = new VideoModel( "普通",source1);
         VideoModel mode2 = new VideoModel("标清", source1);
         VideoModel mode3 = new VideoModel("高清", source1);

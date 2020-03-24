@@ -23,7 +23,7 @@ import com.wapchief.qiniuplayer.event.SpeedEvent;
 import com.wapchief.qiniuplayer.system.MyDanmaKuController;
 import com.wapchief.qiniuplayer.system.MyIJKMediaSystem;
 import com.wapchief.qiniuplayer.system.MyJZMediaSystem;
-import com.wapchief.qiniuplayer.views.MyJZVideoPlayerStandard;
+import com.wapchief.qiniuplayer.views.MyJZVideoPlayerStandard2;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -44,8 +44,8 @@ import master.flame.danmaku.ui.widget.DanmakuView;
 
 public class JiaoZiPlayerActivity extends AppCompatActivity{
 
-    private MyJZVideoPlayerStandard mPlayerStandard;
-    private Button mButton1, mButton,mButtonDownload,mButtonPlayer;
+    private MyJZVideoPlayerStandard2 mPlayerStandard;
+    private Button mButton1, mButton,mButtonDownload,mButtonPlayer,mButtonDialog;
     private TextView mProgress;
     private String[] mediaName = {"普通","高清","原画"};
     private DanmakuView mDanmakuView;
@@ -74,6 +74,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         objects[2] = new HashMap<>();
         ((HashMap) objects[2]).put("key", "value");
         mPlayerStandard.setUp(objects, 0, JZVideoPlayer.SCREEN_WINDOW_NORMAL, "");
+        mPlayerStandard.startVideo();
     }
 
     private void initView() {
@@ -82,6 +83,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
         mButton = findViewById(R.id.jiaozi_bt);
         mButtonDownload = findViewById(R.id.download_bt);
         mButtonPlayer = findViewById(R.id.download_player);
+        mButtonDialog = findViewById(R.id.dialog_bt);
         mButtonDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +114,13 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 mPlayerStandard.setUp(path+"2",JZVideoPlayer.SCREEN_WINDOW_FULLSCREEN,"");
+            }
+        });
+        /**弹窗测试*/
+        mButtonDialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPlayerStandard.showWifiDialog();
             }
         });
         /**弹幕*/
@@ -162,7 +171,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     protected void onPause() {
         super.onPause();
         JZVideoPlayer.releaseAllVideos();
-        JZVideoPlayer.setMediaInterface(mIJKMediaSystem);
+        JZVideoPlayer.setMediaInterface(mJZMediaSystem);
         //Change these two variables back
         JZVideoPlayer.FULLSCREEN_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_SENSOR;
         JZVideoPlayer.NORMAL_ORIENTATION = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
@@ -174,7 +183,7 @@ public class JiaoZiPlayerActivity extends AppCompatActivity{
     @Override
     protected void onResume() {
         super.onResume();
-        JZVideoPlayer.setMediaInterface(mIJKMediaSystem);
+        JZVideoPlayer.setMediaInterface(mJZMediaSystem);
         initPlayer();
         if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
             mDanmakuView.resume();

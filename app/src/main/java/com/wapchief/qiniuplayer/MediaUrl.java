@@ -12,7 +12,7 @@ public class MediaUrl {
     /**rtmp直播流*/
     public final static String URL_RTMP = "rtmp://live.hkstv.hk.lxdns.com/live/hks";
     /**普通视频*/
-    public final static String URL_M3U8 = "http://res.pmit.cn/F3Video/hls/a5814959235386e4e7126573030c4d79/list.m3u8";
+    public final static String URL_M3U8 = "https://ese1a1b2c8d5xn-pub.pubssl.qiqiuyun.net/courselesson-75/20151118042208-gcvn0i6qg2gc4cs8/77cfbe71b9ab6a7b_sd_seg_0_84697e13e9802f3ff627226ddc5be136?schoolId=11285&fileGlobalId=f260adcff9ac4c92829a806a431b28b0";
 
     public final static String URL_M3U8_PW = " http://www.mypsy365.com/hls/145/stream/sd/JNBeCe1z2VCv0CssIRNlRikqZVEJqeMp.m3u8?1521516381";
 
